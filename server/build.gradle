@@ -1,0 +1,14 @@
+apply plugin: 'spring-boot'
+
+dependencies {
+    compile('org.springframework.cloud:spring-cloud-starter-eureka-server')
+    //compile ('com.hazelcast:hazelcast-all:3.7.4')
+    compile ('com.hazelcast:hazelcast:3.7.4')
+    testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.cloud:spring-cloud-dependencies:Brixton.RELEASE"
+    }
+}

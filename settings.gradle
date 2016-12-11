@@ -1,0 +1,4 @@
+rootProject.name = 'sequental-distributed-queue'
+include 'server'
+include 'task-producer'
+
