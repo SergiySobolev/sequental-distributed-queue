@@ -1,6 +1,10 @@
 server:
   port: ${PORT:8761}
 
+#spring:
+#  hazelcast:
+#    config=classpath:server-hazelcast.xml
+
 eureka:
   client:
     registerWithEureka: false
