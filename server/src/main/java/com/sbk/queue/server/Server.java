@@ -1,6 +1,7 @@
 package com.sbk.queue.server;
 
 import com.hazelcast.config.Config;
+import com.hazelcast.config.MapConfig;
 import com.hazelcast.config.QueueConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -22,6 +23,9 @@ public class Server {
                 .setName("inbound-tasks-queue")
                 .setMaxSize(120)
         )
+        ;
+        config.addMapConfig(new MapConfig()
+                .setName("task-for-session"))
         ;
         return config;
     }
