@@ -2,6 +2,7 @@ apply plugin: 'spring-boot'
 
 dependencies {
     compile('org.springframework.cloud:spring-cloud-starter-eureka')
+    compile('com.hazelcast:hazelcast-client:3.7.4')
     compile project(':shared')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

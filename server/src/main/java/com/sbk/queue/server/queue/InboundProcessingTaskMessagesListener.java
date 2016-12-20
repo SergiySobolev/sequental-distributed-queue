@@ -1,6 +1,5 @@
 package com.sbk.queue.server.queue;
 
-
 import com.hazelcast.core.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -13,28 +12,28 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
-public class InboundTaskQueue implements ItemListener<ProcessingTask> {
+public class InboundProcessingTaskMessagesListener implements MessageListener<ProcessingTask> {
 
-    private final Logger logger = LoggerFactory.getLogger(InboundTaskQueue.class);
+    private final Logger logger = LoggerFactory.getLogger(InboundProcessingTaskMessagesListener.class);
 
     private final HazelcastInstance instance;
-    private final IQueue<ProcessingTask> taskQueue;
     private final IMap<UUID, List<ProcessingTask>> tasksForSessionsMap;
 
     @Autowired
-    public InboundTaskQueue(HazelcastInstance instance) {
+    public InboundProcessingTaskMessagesListener(HazelcastInstance instance) {
         this.instance = instance;
-        taskQueue = this.instance.getQueue("inbound-tasks-queue");
-        taskQueue.addItemListener(this, true);
+        ITopic<ProcessingTask> processingTaskITopic = this.instance.getTopic("inbound-task-topic");
+        processingTaskITopic.addMessageListener(this);
         tasksForSessionsMap = this.instance.getMap("task-for-session");
-        logger.info("Waiting for tasks");
+        logger.info("Topic waiting for inbound tasks");
     }
 
+
     @Override
-    public void itemAdded(ItemEvent<ProcessingTask> item) {
-        ProcessingTask task = item.getItem();
+    public void onMessage(Message<ProcessingTask> message) {
+        ProcessingTask task = message.getMessageObject();
         UUID session = task.getSessionId();
-        logger.info("Task received:[{}] for session Id : [{}]", task, session);
+        logger.info("Task received: [{}] for session Id : [{}]", task, session);
         List<ProcessingTask> tasksForSession = tasksForSessionsMap.get(session);
         logger.info("Getting task queue for :[{}]", session);
         if(tasksForSession == null) {
@@ -46,10 +45,5 @@ public class InboundTaskQueue implements ItemListener<ProcessingTask> {
             tasksForSessionsMap.put(session, tasksForSession);
         }
         logger.info("Current tasks for sessions map:[{}]", tasksForSessionsMap);
-    }
-
-    @Override
-    public void itemRemoved(ItemEvent<ProcessingTask> item) {
-
     }
 }

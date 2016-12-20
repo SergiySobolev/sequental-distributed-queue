@@ -5,34 +5,27 @@ import java.io.Serializable;
 import java.util.UUID;
 
 public class ProcessingTask implements Serializable {
-    private UUID taskId;
     private UUID sessionId;
-    private long timeStamp;
+    private long taskNum;
 
-    public ProcessingTask(UUID taskId, UUID sessionId, long timeStamp) {
-        this.taskId = taskId;
+    public ProcessingTask(UUID sessionId, long taskNum) {
         this.sessionId = sessionId;
-        this.timeStamp = timeStamp;
-    }
-
-    public UUID getTaskId() {
-        return taskId;
+        this.taskNum = taskNum;
     }
 
     public UUID getSessionId() {
         return sessionId;
     }
 
-    public long getTimeStamp() {
-        return timeStamp;
+    public long getTaskNum() {
+        return taskNum;
     }
 
     @Override
     public String toString() {
         return "ProcessingTask{" +
-                "taskId=" + taskId +
-                ", sessionId=" + sessionId +
-                ", timeStamp=" + timeStamp +
+                "sessionId=" + sessionId +
+                ", taskNum=" + taskNum +
                 '}';
     }
 }

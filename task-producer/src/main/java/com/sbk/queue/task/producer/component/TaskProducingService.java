@@ -2,7 +2,7 @@ package com.sbk.queue.task.producer.component;
 
 
 import com.hazelcast.core.HazelcastInstance;
-import com.hazelcast.core.IQueue;
+import com.hazelcast.core.ITopic;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +10,7 @@ import org.springframework.stereotype.Component;
 import task.ProcessingTask;
 
 import javax.annotation.PostConstruct;
-import java.time.Instant;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class TaskProducingService {
@@ -29,15 +26,19 @@ public class TaskProducingService {
 
     @PostConstruct
     public void generateMessage() {
-        IQueue<ProcessingTask> taskQueue = instance.getQueue("inbound-tasks-queue");
+        ITopic<ProcessingTask> taskTopic = instance.getTopic("inbound-task-topic");
         UUID[] sessions = new UUID[]{UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()};
         Random r = new Random();
         logger.info("Starting generating tasks for sessions: [{}]", Arrays.toString(sessions));
+        Map<UUID, Long> taskNumsForSession = new HashMap<>();
         for(;;){
             try {
-                ProcessingTask task = new ProcessingTask(UUID.randomUUID(), sessions[r.nextInt(3)], Instant.now().getEpochSecond());
-                logger.info("Sending task: [{}]", task);
-                taskQueue.offer(task);
+                UUID sessionId = sessions[r.nextInt(3)];
+                long taskNum = taskNumsForSession.getOrDefault(sessionId,1L);
+                ProcessingTask task = new ProcessingTask(sessionId, taskNum);
+                taskNumsForSession.put(sessionId, taskNum+1);
+                logger.info("Publishing task: [{}]", task);
+                taskTopic.publish(task);
                 Thread.sleep(2000);
             } catch (InterruptedException ex) {
                 ex.printStackTrace();
