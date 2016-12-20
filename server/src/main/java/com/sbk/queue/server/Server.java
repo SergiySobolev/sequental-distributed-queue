@@ -24,6 +24,8 @@ public class Server {
                 .setName("inbound-task-topic"));
         config.addTopicConfig(new TopicConfig()
                 .setName("ready-for-processing-task-topic"));
+        config.addTopicConfig(new TopicConfig()
+                .setName("completed-task-topic"));
         config.addMapConfig(new MapConfig()
                 .setName("task-for-session"))
         ;

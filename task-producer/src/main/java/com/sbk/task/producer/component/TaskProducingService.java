@@ -1,4 +1,4 @@
-package com.sbk.queue.task.producer.component;
+package com.sbk.task.producer.component;
 
 
 import com.hazelcast.core.HazelcastInstance;

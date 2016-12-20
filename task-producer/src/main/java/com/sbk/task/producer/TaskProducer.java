@@ -1,7 +1,6 @@
-package com.sbk.queue.task.producer;
+package com.sbk.task.producer;
 
 
-import com.google.common.hash.HashingInputStream;
 import com.hazelcast.client.HazelcastClient;
 import com.hazelcast.client.config.ClientConfig;
 import com.hazelcast.client.config.ClientNetworkConfig;

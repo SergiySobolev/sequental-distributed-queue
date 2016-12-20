@@ -16,15 +16,13 @@ public class InboundProcessingTaskMessagesListener implements MessageListener<Pr
 
     private final Logger logger = LoggerFactory.getLogger(InboundProcessingTaskMessagesListener.class);
 
-    private final HazelcastInstance instance;
     private final IMap<UUID, List<ProcessingTask>> tasksForSessionsMap;
 
     @Autowired
     public InboundProcessingTaskMessagesListener(HazelcastInstance instance) {
-        this.instance = instance;
-        ITopic<ProcessingTask> processingTaskITopic = this.instance.getTopic("inbound-task-topic");
+        ITopic<ProcessingTask> processingTaskITopic = instance.getTopic("inbound-task-topic");
         processingTaskITopic.addMessageListener(this);
-        tasksForSessionsMap = this.instance.getMap("task-for-session");
+        tasksForSessionsMap = instance.getMap("task-for-session");
         logger.info("Topic waiting for inbound tasks");
     }
 
@@ -44,6 +42,6 @@ public class InboundProcessingTaskMessagesListener implements MessageListener<Pr
             tasksForSession.add(task);
             tasksForSessionsMap.put(session, tasksForSession);
         }
-        logger.info("Current tasks for sessions map:[{}]", tasksForSessionsMap);
+
     }
 }
