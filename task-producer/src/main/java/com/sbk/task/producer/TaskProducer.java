@@ -21,7 +21,10 @@ public class TaskProducer {
     @Bean
     public ClientConfig config() {
         return new ClientConfig().setNetworkConfig(
-                new ClientNetworkConfig().addAddress("127.0.0.1:10000"));
+                new ClientNetworkConfig()
+                        .addAddress("127.0.0.1:10000")
+                        .setConnectionAttemptLimit(0)
+        );
     }
 
     @Bean
