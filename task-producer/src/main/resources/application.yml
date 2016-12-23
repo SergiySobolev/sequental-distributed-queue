@@ -2,7 +2,7 @@ spring:
   application:
     name: task-producer
 server:
-  port: 0
+  port: 7890
 eureka:
   client:
     serviceUrl:

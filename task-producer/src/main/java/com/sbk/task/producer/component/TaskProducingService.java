@@ -7,12 +7,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import task.ProcessingTask;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
 
-@Component
+@Service
 public class TaskProducingService {
 
     private final Logger logger = LoggerFactory.getLogger(TaskProducingService.class);
@@ -24,8 +25,7 @@ public class TaskProducingService {
         this.instance = instance;
     }
 
-    @PostConstruct
-    public void generateMessage() {
+    public void sendTasks() {
         ITopic<ProcessingTask> taskTopic = instance.getTopic("inbound-task-topic");
         UUID[] sessions = new UUID[]{UUID.randomUUID(), UUID.randomUUID(), UUID.randomUUID()};
         Random r = new Random();
