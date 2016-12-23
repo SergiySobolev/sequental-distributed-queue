@@ -22,10 +22,10 @@ subprojects {
     targetCompatibility = 1.8
 
     dependencies {
-        compile ('com.hazelcast:hazelcast:3.7.4')
+        compile('com.hazelcast:hazelcast:3.7.4')
     }
 
     repositories {
-        mavenCentral()
+        jcenter()
     }
 }
